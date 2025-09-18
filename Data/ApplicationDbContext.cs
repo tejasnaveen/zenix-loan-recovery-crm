@@ -32,11 +32,11 @@ namespace LoanRecoveryCRM.Data
                 entity.Property(e => e.CustomerName).IsRequired().HasMaxLength(100);
                 entity.Property(e => e.LoanId).IsRequired().HasMaxLength(50);
                 entity.Property(e => e.MobileNo).IsRequired().HasMaxLength(15);
-                entity.Property(e => e.LoanAmount).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.Outstanding).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.POSAmount).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.EMIAmount).HasColumnType("decimal(18,2)");
-                entity.Property(e => e.PendingDues).HasColumnType("decimal(18,2)");
+                entity.Property(e => e.LoanAmount).HasColumnType("decimal(18,2)").HasPrecision(18, 2);
+                entity.Property(e => e.Outstanding).HasColumnType("decimal(18,2)").HasPrecision(18, 2);
+                entity.Property(e => e.POSAmount).HasColumnType("decimal(18,2)").HasPrecision(18, 2);
+                entity.Property(e => e.EMIAmount).HasColumnType("decimal(18,2)").HasPrecision(18, 2);
+                entity.Property(e => e.PendingDues).HasColumnType("decimal(18,2)").HasPrecision(18, 2);
             });
 
             // Seed default custom columns

@@ -1,0 +1,58 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: zenix-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root_password}
+      MYSQL_DATABASE: ${MYSQL_DATABASE:-LoanRecoveryCRM}
+      MYSQL_USER: ${MYSQL_USER:-zenix_user}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-zenix_password}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./mysql-setup.sql:/docker-entrypoint-initdb.d/init.sql
+    command: --default-authentication-plugin=mysql_native_password
+    networks:
+      - zenix-network
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:latest
+    container_name: zenix-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: ${MYSQL_USER:-zenix_user}
+      PMA_PASSWORD: ${MYSQL_PASSWORD:-zenix_password}
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - zenix-network
+
+  zenix-app:
+    build: .
+    container_name: zenix-crm
+    restart: unless-stopped
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: "Server=mysql;Database=${MYSQL_DATABASE:-LoanRecoveryCRM};User=${MYSQL_USER:-zenix_user};Password=${MYSQL_PASSWORD:-zenix_password};Port=3306;"
+    ports:
+      - "5000:80"
+    depends_on:
+      - mysql
+    networks:
+      - zenix-network
+
+volumes:
+  mysql_data:
+    driver: local
+
+networks:
+  zenix-network:
+    driver: bridge
