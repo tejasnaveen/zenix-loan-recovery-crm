@@ -302,85 +302,145 @@ const SuperAdminDashboard: React.FC<SuperAdminDashboardProps> = ({ user, onLogou
   );
 
   const renderCompanies = () => (
-    <div className="bg-white rounded-xl shadow-sm border border-gray-200">
-      <div className="p-6 border-b border-gray-200 flex justify-between items-center">
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex justify-between items-center">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Company Management</h3>
-          <p className="text-sm text-gray-600">Manage companies, admins, and subscription plans</p>
+          <h3 className="text-2xl font-bold text-gray-900">Company Management</h3>
+          <p className="text-gray-600">Manage companies with beautiful card interface</p>
         </div>
         <button 
           onClick={() => setShowCompanyModal(true)}
-          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg flex items-center"
+          className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg flex items-center shadow-lg hover:shadow-xl transition-all duration-200"
         >
-          <Plus className="w-4 h-4 mr-2" />
+          <Plus className="w-5 h-5 mr-2" />
           Add Company
         </button>
       </div>
-      <div className="p-6">
-        <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200">
-            <thead className="bg-gray-50">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Company</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Admin</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Users</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plan</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Connections</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Collections</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="bg-white divide-y divide-gray-200">
-              {companies.map((company) => (
-                <tr key={company.id}>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm font-medium text-gray-900">{company.name}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{company.admin}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{company.users}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      company.plan === 'Premium' ? 'bg-purple-100 text-purple-800' :
-                      company.plan === 'Standard' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {company.plan}
+
+      {/* Companies Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        {companies.map((company) => (
+          <div key={company.id} className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100 overflow-hidden">
+            {/* Card Header */}
+            <div className="bg-gradient-to-r from-blue-500 to-purple-600 p-4 text-white">
+              <div className="flex justify-between items-start">
+                <div>
+                  <h4 className="font-bold text-lg truncate">{company.name}</h4>
+                  <p className="text-blue-100 text-sm">ID: {company.id}</p>
+                </div>
+                <span className={`px-2 py-1 rounded-full text-xs font-semibold ${
+                  company.status === 'Active' 
+                    ? 'bg-green-500 text-white' 
+                    : 'bg-red-500 text-white'
+                }`}>
+                  {company.status}
+                </span>
+              </div>
+            </div>
+
+            {/* Card Body */}
+            <div className="p-4 space-y-3">
+              <div className="flex items-center text-sm">
+                <Building2 className="w-4 h-4 text-blue-500 mr-2" />
+                <span className="text-gray-600">Admin:</span>
+                <span className="ml-1 font-medium">{company.admin}</span>
+              </div>
+              
+              <div className="flex items-center text-sm">
+                <Users className="w-4 h-4 text-green-500 mr-2" />
+                <span className="text-gray-600">Users:</span>
+                <span className="ml-1 font-medium">{company.users}</span>
+              </div>
+              
+              <div className="flex items-center text-sm">
+                <Shield className="w-4 h-4 text-purple-500 mr-2" />
+                <span className="text-gray-600">Plan:</span>
+                <span className={`ml-1 px-2 py-1 rounded text-xs font-semibold ${
+                  company.plan === 'Premium' ? 'bg-purple-100 text-purple-800' :
+                  company.plan === 'Standard' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'
+                }`}>
+                  {company.plan}
+                </span>
+              </div>
+              
+              <div className="flex items-center text-sm">
+                <Phone className="w-4 h-4 text-orange-500 mr-2" />
+                <span className="text-gray-600">Connections:</span>
+                <span className="ml-1 font-medium">{company.connections}</span>
+              </div>
+              
+              <div className="flex items-center text-sm">
+                <DollarSign className="w-4 h-4 text-green-600 mr-2" />
+                <span className="text-gray-600">Collections:</span>
+                <span className="ml-1 font-bold text-green-600">₹{(company.collections / 100000).toFixed(1)}L</span>
+              </div>
+            </div>
+
+            {/* Card Footer */}
+            <div className="px-4 py-3 bg-gray-50 border-t border-gray-100">
+              <div className="flex justify-between items-center">
+                <div className="flex space-x-2">
+                  <button 
+                    onClick={() => {
+                      setEditingCompany(company);
+                      setShowCompanyModal(true);
+                    }}
+                    className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors duration-200"
+                    title="Edit Company"
+                  >
+                    <Edit className="w-4 h-4" />
+                  </button>
+                  <button 
+                    className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors duration-200"
+                    title="Delete Company"
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </button>
+                  <button 
+                    className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors duration-200"
+                    title="View Details"
+                  >
+                    <Eye className="w-4 h-4" />
+                  </button>
+                </div>
+                <button 
+                  className="text-xs text-gray-500 hover:text-gray-700 font-medium"
+                  title="Toggle Status"
+                >
+                  {company.status === 'Active' ? (
+                    <span className="flex items-center">
+                      <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>
+                      Active
                     </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{company.connections}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">₹{(company.collections / 100000).toFixed(1)}L</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                      company.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                    }`}>
-                      {company.status}
+                  ) : (
+                    <span className="flex items-center">
+                                          <div className="w-2 h-2 bg-red-500 rounded-full mr-1"></div>
+                      Inactive
                     </span>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                    <div className="flex space-x-2">
-                      <button className="text-blue-600 hover:text-blue-900">
-                        <Eye className="w-4 h-4" />
-                      </button>
-                      <button 
-                        onClick={() => {
-                          setEditingCompany(company);
-                          setShowCompanyModal(true);
-                        }}
-                        className="text-green-600 hover:text-green-900"
-                      >
-                        <Edit className="w-4 h-4" />
-                      </button>
-                      <button className="text-red-600 hover:text-red-900">
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+                  )}
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
+
+      {/* Empty State */}
+      {companies.length === 0 && (
+        <div className="text-center py-12">
+          <Building2 className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+          <h3 className="text-lg font-medium text-gray-900 mb-2">No Companies Found</h3>
+          <p className="text-gray-500 mb-6">Get started by adding your first company</p>
+          <button 
+            onClick={() => setShowCompanyModal(true)}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-6 py-3 rounded-lg inline-flex items-center"
+          >
+            <Plus className="w-5 h-5 mr-2" />
+            Add Your First Company
+          </button>
+        </div>
+      )}
     </div>
   );
 
