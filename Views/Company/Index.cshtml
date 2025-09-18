@@ -6,38 +6,52 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12">
-            <!-- Header -->
-            <div class="d-flex justify-content-between align-items-center mb-4">
-                <div>
-                    <h2 class="text-primary mb-1">
-                        <i class="fas fa-building me-2"></i>
-                        Company Management
-                    </h2>
-                    <p class="text-muted mb-0">Manage companies and their administrators</p>
+            <!-- Enhanced Header -->
+            <div class="page-header text-center">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-md-8">
+                            <h2 class="mb-1">
+                                <i class="fas fa-building me-3"></i>
+                                Company Management
+                            </h2>
+                            <p class="mb-0">Manage companies and their administrators with ease</p>
+                        </div>
+                        <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                            <button type="button" class="btn btn-lg" id="addCompanyBtn">
+                                <i class="fas fa-plus me-2"></i>Add New Company
+                            </button>
+                        </div>
+                    </div>
                 </div>
-                <button type="button" class="btn btn-primary btn-lg" id="addCompanyBtn">
-                    <i class="fas fa-plus me-2"></i>Add Company
-                </button>
             </div>
 
-            <!-- Companies Grid -->
-            <div class="row" id="companiesGrid">
-                <!-- Company cards will be loaded here -->
+            <!-- Companies Grid with Enhanced Layout -->
+            <div class="container">
+                <div class="row" id="companiesGrid">
+                    <!-- Company cards will be loaded here -->
+                </div>
             </div>
 
             <!-- Loading Indicator -->
             <div id="loadingIndicator" class="text-center py-5" style="display: none;">
-                <div class="spinner-border text-primary" role="status">
+                <div class="spinner-border text-primary mb-3" role="status" style="width: 3rem; height: 3rem;">
                     <span class="visually-hidden">Loading...</span>
                 </div>
-                <p class="mt-2 text-muted">Loading companies...</p>
+                <h5 class="text-muted">Loading companies...</h5>
+                <p class="text-muted mb-0">Please wait while we fetch your company data</p>
             </div>
 
             <!-- No Data Message -->
             <div id="noDataMessage" class="text-center py-5" style="display: none;">
-                <i class="fas fa-building fa-3x text-muted mb-3"></i>
-                <h4 class="text-muted">No Companies Found</h4>
-                <p class="text-muted">Click "Add Company" to create your first company.</p>
+                <div class="mb-4">
+                    <i class="fas fa-building fa-4x text-muted mb-3"></i>
+                    <h3 class="text-muted mb-2">No Companies Found</h3>
+                    <p class="text-muted mb-4">Get started by adding your first company to the system</p>
+                    <button type="button" class="btn btn-primary btn-lg" onclick="$('#addCompanyBtn').click()">
+                        <i class="fas fa-plus me-2"></i>Add Your First Company
+                    </button>
+                </div>
             </div>
         </div>
     </div>
@@ -341,54 +355,118 @@
                 : '<i class="fas fa-toggle-off text-muted"></i>';
 
             return `
-                <div class="col-lg-4 col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm border-0 company-card" data-company-id="${company.id}">
-                        <div class="card-header bg-gradient-primary text-white d-flex justify-content-between align-items-center">
-                            <h6 class="mb-0 text-truncate me-2">
-                                <i class="fas fa-building me-2"></i>${company.companyName}
-                            </h6>
-                            ${statusBadge}
+                <div class="col-xl-4 col-lg-6 col-md-6 mb-4">
+                    <div class="card company-card h-100 shadow-lg border-0" data-company-id="${company.id}">
+                        <!-- Card Header with Company Name and Status -->
+                        <div class="card-header company-card-header text-white position-relative overflow-hidden">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div class="d-flex align-items-center">
+                                    <div class="company-icon me-3">
+                                        <i class="fas fa-building fa-lg"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="mb-0 company-name">${company.companyName}</h5>
+                                        <small class="text-white-50">ID: ${company.id}</small>
+                                    </div>
+                                </div>
+                                <div class="status-badge">
+                                    ${statusBadge}
+                                </div>
+                            </div>
+                            <div class="card-header-bg"></div>
                         </div>
-                        <div class="card-body">
-                            <div class="mb-2">
-                                <small class="text-muted">Proprietor</small>
-                                <div class="fw-semibold">${company.proprietorName}</div>
+
+                        <!-- Card Body with Company Details -->
+                        <div class="card-body p-4">
+                            <!-- Proprietor Info -->
+                            <div class="company-detail-item mb-3">
+                                <div class="detail-icon">
+                                    <i class="fas fa-user-tie text-primary"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <small class="text-muted text-uppercase fw-bold">Proprietor</small>
+                                    <div class="fw-semibold text-dark">${company.proprietorName}</div>
+                                </div>
                             </div>
-                            <div class="mb-2">
-                                <small class="text-muted">Contact</small>
-                                <div><i class="fas fa-phone me-1"></i>${company.contact}</div>
+
+                            <!-- Contact Info -->
+                            <div class="company-detail-item mb-3">
+                                <div class="detail-icon">
+                                    <i class="fas fa-phone text-success"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <small class="text-muted text-uppercase fw-bold">Contact</small>
+                                    <div class="fw-semibold text-dark">
+                                        <a href="tel:${company.contact}" class="text-decoration-none text-dark">
+                                            ${company.contact}
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-2">
-                                <small class="text-muted">Email</small>
-                                <div class="text-truncate"><i class="fas fa-envelope me-1"></i>${company.email}</div>
+
+                            <!-- Email Info -->
+                            <div class="company-detail-item mb-3">
+                                <div class="detail-icon">
+                                    <i class="fas fa-envelope text-info"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <small class="text-muted text-uppercase fw-bold">Email</small>
+                                    <div class="fw-semibold text-dark">
+                                        <a href="mailto:${company.email}" class="text-decoration-none text-dark text-truncate d-block">
+                                            ${company.email}
+                                        </a>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="mb-2">
-                                <small class="text-muted">GST No</small>
-                                <div><i class="fas fa-file-invoice me-1"></i>${company.gstNo}</div>
+
+                            <!-- GST Info -->
+                            <div class="company-detail-item mb-3">
+                                <div class="detail-icon">
+                                    <i class="fas fa-file-invoice text-warning"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <small class="text-muted text-uppercase fw-bold">GST Number</small>
+                                    <div class="fw-semibold text-dark font-monospace">${company.gstNo}</div>
+                                </div>
                             </div>
-                            <div class="mb-3">
-                                <small class="text-muted">Administrators</small>
-                                <div>
-                                    <i class="fas fa-users me-1"></i>
-                                    <span class="badge bg-info">${company.adminCount}</span>
-                                    <button class="btn btn-link btn-sm p-0 ms-2" onclick="openAdminManagement(${company.id}, '${company.companyName}')">
-                                        <i class="fas fa-cog"></i> Manage
-                                    </button>
+
+                            <!-- Admin Count -->
+                            <div class="company-detail-item mb-0">
+                                <div class="detail-icon">
+                                    <i class="fas fa-users text-purple"></i>
+                                </div>
+                                <div class="detail-content">
+                                    <small class="text-muted text-uppercase fw-bold">Administrators</small>
+                                    <div class="d-flex align-items-center">
+                                        <span class="badge bg-gradient-info me-2">${company.adminCount} Admin${company.adminCount !== 1 ? 's' : ''}</span>
+                                        <button class="btn btn-link btn-sm p-0 text-decoration-none" onclick="openAdminManagement(${company.id}, '${company.companyName}')">
+                                            <i class="fas fa-cog me-1"></i>Manage
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="card-footer bg-light d-flex justify-content-between align-items-center">
-                            <div class="btn-group" role="group">
-                                <button type="button" class="btn btn-outline-primary btn-sm" onclick="editCompany(${company.id})" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button type="button" class="btn btn-outline-danger btn-sm" onclick="confirmDelete(${company.id})" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+
+                        <!-- Card Footer with Actions -->
+                        <div class="card-footer bg-white border-top-0 p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <!-- Action Buttons -->
+                                <div class="btn-group" role="group">
+                                    <button type="button" class="btn btn-outline-primary btn-sm rounded-pill me-1" onclick="editCompany(${company.id})" title="Edit Company">
+                                        <i class="fas fa-edit me-1"></i>Edit
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger btn-sm rounded-pill" onclick="confirmDelete(${company.id})" title="Delete Company">
+                                        <i class="fas fa-trash me-1"></i>Delete
+                                    </button>
+                                </div>
+
+                                <!-- Status Toggle -->
+                                <div class="status-toggle">
+                                    <button type="button" class="btn btn-link btn-sm p-0 fs-4" onclick="toggleStatus(${company.id})" title="Toggle Status">
+                                        ${statusToggle}
+                                    </button>
+                                </div>
                             </div>
-                            <button type="button" class="btn btn-link btn-sm p-0" onclick="toggleStatus(${company.id})" title="Toggle Status">
-                                ${statusToggle}
-                            </button>
                         </div>
                     </div>
                 </div>
@@ -793,62 +871,326 @@
 
 @section Styles {
     <style>
+        /* Enhanced Company Card Styles */
         .company-card {
-            transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 16px;
+            overflow: hidden;
+            background: #ffffff;
         }
         
         .company-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.08) !important;
         }
         
-        .bg-gradient-primary {
-            background: linear-gradient(45deg, #007bff, #0056b3);
+        /* Card Header Styles */
+        .company-card-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            padding: 1.5rem;
+            border: none;
         }
         
-        .card-header h6 {
+        .company-card-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none;
+        }
+        
+        .card-header-bg {
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            transform: rotate(45deg);
+        }
+        
+        .company-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+        
+        .company-name {
+            font-weight: 700;
+            font-size: 1.1rem;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .status-badge .badge {
+            font-size: 0.75rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 20px;
             font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
         
-        .btn-group .btn {
-            border-radius: 0.25rem;
+        /* Company Detail Items */
+        .company-detail-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
         }
         
-        .btn-group .btn:not(:last-child) {
-            margin-right: 2px;
+        .company-detail-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        
+        .detail-icon {
+            width: 40px;
+            height: 40px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .detail-content {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .detail-content small {
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+            display: block;
+        }
+        
+        .detail-content .fw-semibold {
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+        
+        /* Badge Styles */
+        .bg-gradient-info {
+            background: linear-gradient(45deg, #17a2b8, #138496);
+            color: white;
+            border: none;
+        }
+        
+        /* Button Styles */
+        .btn-outline-primary.rounded-pill {
+            border-width: 2px;
+            font-weight: 600;
+            padding: 0.375rem 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-outline-primary.rounded-pill:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+        }
+        
+        .btn-outline-danger.rounded-pill {
+            border-width: 2px;
+            font-weight: 600;
+            padding: 0.375rem 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-outline-danger.rounded-pill:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+        
+        /* Status Toggle */
+        .status-toggle .btn {
+            transition: all 0.2s ease;
+        }
+        
+        .status-toggle .btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .text-purple {
+            color: #6f42c1 !important;
+        }
+        
+        /* Loading and Empty States */
+        #loadingIndicator {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 3rem;
+            margin: 2rem 0;
+        }
+        
+        #noDataMessage {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 16px;
+            padding: 4rem 2rem;
+            margin: 2rem 0;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .company-card {
+                margin-bottom: 1.5rem;
+            }
+            
+            .company-card-header {
+                padding: 1rem;
+            }
+            
+            .company-name {
+                font-size: 1rem;
+            }
+            
+            .btn-group {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .btn-group .btn {
+                margin-bottom: 0.5rem;
+                margin-right: 0 !important;
+            }
+            
+            .card-footer {
+                flex-direction: column;
+                align-items: stretch !important;
+            }
+            
+            .status-toggle {
+                margin-top: 1rem;
+                text-align: center;
+            }
+        }
+        
+        @media (max-width: 576px) {
+            .company-detail-item {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .detail-icon {
+                margin: 0 auto 0.5rem auto;
+            }
+        }
+        
+        /* Animation for card appearance */
+        @keyframes cardFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .company-card {
+            animation: cardFadeIn 0.5s ease-out;
+        }
+        
+        /* Header Enhancement */
+        .page-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            border-radius: 0 0 20px 20px;
+        }
+        
+        .page-header h2 {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .page-header p {
+            opacity: 0.9;
+            margin-bottom: 0;
+        }
+        
+        #addCompanyBtn {
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+        
+        #addCompanyBtn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 255, 255, 0.5);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* Modal Enhancements */
+        .modal-content {
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        
+        .modal-header {
+            border-radius: 16px 16px 0 0;
+            border-bottom: none;
+            padding: 1.5rem;
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .modal-footer {
+            border-top: none;
+            padding: 1.5rem;
+            border-radius: 0 0 16px 16px;
         }
         
         .form-control:focus {
             border-color: #86b7fe;
             box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+            border-width: 2px;
         }
         
         .form-check-input:checked {
-            background-color: #198754;
-            border-color: #198754;
+            background-color: #28a745;
+            border-color: #28a745;
         }
         
-        .table th {
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.875rem;
-            letter-spacing: 0.5px;
+        /* Toast Notifications */
+        .toast {
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
         
-        .badge {
-            font-size: 0.75em;
-            font-weight: 500;
+        /* Utility Classes */
+        .text-white-50 {
+            color: rgba(255, 255, 255, 0.5) !important;
         }
         
-        @media (max-width: 768px) {
-            .btn-group {
-                flex-direction: column;
-            }
-            
-            .btn-group .btn {
-                margin-bottom: 2px;
-                margin-right: 0;
-            }
+        .font-monospace {
+            font-family: 'Courier New', Courier, monospace;
         }
     </style>
 }
