@@ -1,0 +1,47 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to ZENIX</h1>
+    <p>Manage your loan recovery operations efficiently with our comprehensive CRM system.</p>
+    
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-columns fa-3x text-primary mb-3"></i>
+                    <h5 class="card-title">Custom Column Management</h5>
+                    <p class="card-text">Configure which columns to display on the telecaller page and add custom fields.</p>
+                    <a href="@Url.Action("CustomColumnManagement", "CompanyAdmin")" class="btn btn-primary">
+                        Manage Columns
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-phone fa-3x text-success mb-3"></i>
+                    <h5 class="card-title">Telecaller Dashboard</h5>
+                    <p class="card-text">Access customer data with dynamic columns and advanced search capabilities.</p>
+                    <a href="@Url.Action("Index", "Telecaller")" class="btn btn-success">
+                        View Customers
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center">
+                    <i class="fas fa-download fa-3x text-info mb-3"></i>
+                    <h5 class="card-title">Export Data</h5>
+                    <p class="card-text">Export customer data in multiple formats (CSV, Excel, PDF) with selected columns.</p>
+                    <a href="@Url.Action("Index", "Telecaller")" class="btn btn-info">
+                        Export Data
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
