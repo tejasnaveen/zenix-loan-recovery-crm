@@ -11,6 +11,8 @@ namespace LoanRecoveryCRM.Data
 
         public DbSet<CustomColumn> CustomColumns { get; set; }
         public DbSet<Customer> Customers { get; set; }
+        public DbSet<Company> Companies { get; set; }
+        public DbSet<CompanyAdmin> CompanyAdmins { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,6 +41,36 @@ namespace LoanRecoveryCRM.Data
                 entity.Property(e => e.PendingDues).HasColumnType("decimal(18,2)").HasPrecision(18, 2);
             });
 
+            // Configure Company
+            modelBuilder.Entity<Company>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.CompanyName).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.ProprietorName).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Contact).IsRequired().HasMaxLength(15);
+                entity.Property(e => e.Email).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.GSTNo).IsRequired().HasMaxLength(15);
+                entity.HasIndex(e => e.GSTNo).IsUnique();
+                entity.HasIndex(e => e.Email).IsUnique();
+            });
+
+            // Configure CompanyAdmin
+            modelBuilder.Entity<CompanyAdmin>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.EmployeeId).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.Username).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Password).IsRequired().HasMaxLength(255);
+                entity.HasIndex(e => e.Username).IsUnique();
+                entity.HasIndex(e => new { e.CompanyId, e.EmployeeId }).IsUnique();
+                
+                // Foreign key relationship
+                entity.HasOne(e => e.Company)
+                      .WithMany(c => c.CompanyAdmins)
+                      .HasForeignKey(e => e.CompanyId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
             // Seed default custom columns
             modelBuilder.Entity<CustomColumn>().HasData(
                 new CustomColumn { Id = 1, CompanyId = 1, ColumnName = "CustomerName", DisplayName = "Customer Name", IsActive = true, IsCustom = false, SortOrder = 1 },
@@ -52,6 +84,34 @@ namespace LoanRecoveryCRM.Data
                 new CustomColumn { Id = 9, CompanyId = 1, ColumnName = "PendingDues", DisplayName = "Pending Dues", IsActive = true, IsCustom = false, SortOrder = 9 },
                 new CustomColumn { Id = 10, CompanyId = 1, ColumnName = "PaymentLink", DisplayName = "Payment Link", IsActive = true, IsCustom = false, SortOrder = 10 },
                 new CustomColumn { Id = 11, CompanyId = 1, ColumnName = "Actions", DisplayName = "Actions", IsActive = true, IsCustom = false, SortOrder = 11 }
+            );
+
+            // Seed sample companies
+            modelBuilder.Entity<Company>().HasData(
+                new Company 
+                { 
+                    Id = 1, 
+                    CompanyName = "TechCorp Finance", 
+                    ProprietorName = "John Doe", 
+                    Contact = "9876543210", 
+                    Email = "john@techcorp.com", 
+                    GSTNo = "27ABCDE1234F1Z5", 
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                },
+                new Company 
+                { 
+                    Id = 2, 
+                    CompanyName = "Global Lending", 
+                    ProprietorName = "Jane Smith", 
+                    Contact = "9876543211", 
+                    Email = "jane@global.com", 
+                    GSTNo = "29FGHIJ5678K2L6", 
+                    IsActive = true,
+                    CreatedAt = DateTime.UtcNow,
+                    UpdatedAt = DateTime.UtcNow
+                }
             );
         }
     }
